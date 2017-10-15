@@ -1,6 +1,8 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from 'react'
+import logo from './logo.svg'
+import './App.css'
+import './Backend/index.js'
+import './Backend/calc2.js'
 
 class App extends Component {
   render() {
