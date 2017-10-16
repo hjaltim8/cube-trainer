@@ -28,7 +28,11 @@ const cornerScramble = 'uubuubuufrbllllrffffdffudrlrrrrrrdbbdlfdbbulblfbdddudl'
 // correct solution: [[N,B] or [B,Q] or [Q,N]],[[M,W,U or W,U,M or U,M,W] or [C,T,L or T,L,C or L,C,T] or [J,O,G or O,G,J or G,J,O]]
 const cornerScramble2 = 'bubuuuuubulllllllfffrfffuffdrurrrrrlrblbbbfbbrdddddddd'
 
+// no buffer cycle and 2 cycles
 const cornerScramble3 = 'bubuuuuubulllllrlfffrfffurbdrurrrlflrblbbbfbfrdddddddd'
+
+// only a buffer cycle
+const cornerScramble4 = 'llbfuurrludbblrfudufbdflfbldrrfrdbuuddfbblrrlruuldfdbf'
 
 // console.log(encodeToBld)
 
@@ -346,12 +350,9 @@ function solveCorners(codedScramble) {
         console.log('k', k)
         let cycleId = ''
         let sol = k.split('').map(s => {
-            // s is either G L or U
-            // So we get a cycle:
             const rrr = solveCornerCycle(codedScramble, s)
-            // if (rrr.solution.length > 0) sol.push(rrr.solution)
-            corners = { ...corners, ...rrr.corners }
-            console.log('cylce ID: ', rrr.id)
+            // corners = { ...corners, ...rrr.corners }
+            // console.log('cylce ID: ', rrr.id)
             cycleId = rrr.id
             return rrr.solution
         })
@@ -363,31 +364,14 @@ function solveCorners(codedScramble) {
         console.log('solveResult: ', solveResult)
     }, {})
 
-    // let cycle = {}
-    // todo: now pick a random new cycle, or rather try all remaining
-    // to get all possible solutions
-    // right now I'll just pick a random new cycle sticker
-    // cycle.corner = randomProperty(remainingCorners)
-    // console.log('randomly picked corner: ', cycle.corner)
-    // cycle.sticker = _.keys(cycle.corner)[Math.floor(Math.random()*_.size(cycle.corner))]
-    // console.log('randomly picked sticker: ', cycle.sticker)
-
-    // let result2 = solveCornerCycle(codedScramble, cycle)
-
-    // solveResult.cycles.push(result2.solution)
-    // corners.push(result2.corners)
-
-    // remainingCorners = _.omit(remainingCorners, _.keys(result2.corners))
-
-    // Are we really done yet???
     return solveResult
 }
 
-const sol = solveCorners(encode(cornerScramble3))
+const sol = solveCorners(encode(cornerScramble4))
 
 console.log('calculated solution: ', sol)
 // console.log('correct solution: C,K,H,N,O,[(U,G)|(L,U)|(G,L)]')
-console.log('correct solution: [(N,B)|(B,Q)|(Q,N)],[(M,W,U|W,U,M|U,M,W)|(C,T,L|T,L,C|L,C,T)|(J,O,G|O,G,J|G,J,O)]')
+// console.log('correct solution: [(N,B)|(B,Q)|(Q,N)],[(M,W,U|W,U,M|U,M,W)|(C,T,L|T,L,C|L,C,T)|(J,O,G|O,G,J|G,J,O)]')
 
 
 
