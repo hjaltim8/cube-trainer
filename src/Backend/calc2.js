@@ -9,7 +9,7 @@ import pieceMap from './pieceMap.json'
 import stickerMap from './mapping1.json'
 
 const solved = 'uuuuuuuuulllllllllfffffffffrrrrrrrrrbbbbbbbbbddddddddd'
-const solvd  = 'AaBd0bDcCEeFh1fHgGIiJl2jLkKMmNp3nPoOQqRt4rTsSUuVx5vXwW'
+const solvd = 'AaBd0bDcCEeFh1fHgGIiJl2jLkKMmNp3nPoOQqRt4rTsSUuVx5vXwW'
 
 // superflip with red center on front and yellow center on top
 const scramble = 'ubulurufululblfldlfuflfrfdfrurfrbrdrbubrblbdbdfdldrdbd'
@@ -49,9 +49,14 @@ const cornerScramble4 = 'llbfuurrludbblrfudufbdflfbldrrfrdbuuddfbblrrlruuldfdbf'
 function code(input, map) {
     const s = input.split('')
     pieces.forEach(piece => {
-        let key = piece.map(id => s[id]).sort().join('')
+        let key = piece
+            .map(id => s[id])
+            .sort()
+            .join('')
         let enc = map[key]
-        piece.forEach(id => { s[id] = enc[s[id]] })
+        piece.forEach(id => {
+            s[id] = enc[s[id]]
+        })
     })
     return s.join('')
 }
@@ -76,173 +81,41 @@ console.log(result3)
 console.log(result4)
 console.log(scramble === result4)
 
-
 // Now next step is to find corner and edge solutions
 // given a buffer, but we can assume UBL for now as a corner buffer
 // and df df as edge buffer
 
-// So for corners:
-// start by looking at what we have in UBL (0)
-// Lookup where it belongs, and add that letter to the list
-// If !8 corners found then continue
-// This of course means that there are multiple corner solutions
-// and the question is if they are interchangable, in that case
-// return an array, otherwise just pick the first one
-
-function findCornerSolutions(encodedScramble, buffer = 0) {
-    const result = []
-    // Look at the piece in the buffer
-    let current = {
-        index: buffer,
-        sticker: encodedScramble[buffer],
-    }
-
-    // Is this sticker home?
-    const correct = toKey[current.index] === current.sticker
-
-    // Yes, the sticker is home
-    if (correct) {
-        //
-    // No, the sticker isn't home
-    } else {
-        // 
-    }
-
-    // Walkthrough:
-    // When I get to Q I start a new cycle to a corner (note corner, not sticker)
-    // that I have not already checked.
-    // In this particular case I can choose between two corners
-    // (DFI) and (GLU)
-    // which gives me 6 different stickers to look at next...
-
-    // just focusing on corners, this should give the following corner solutions:
-    //  1. C,K,H,N,O,(Q),(D|F|I), G, L => Done!
-    //  2. C,K,H,N,O,(Q),(D|F|I), L, U => Done!
-    //  3. C,K,H,N,O,(Q),(D|F|I), U, G => Done!
-    //  4. C,K,H,N,O,(Q), G, L, (D|F|I) => Done!
-    //  5. C,K,H,N,O,(Q), L, U, (D|F|I) => Done!
-    //  6. C,K,H,N,O,(Q), U, G, (D|F|I) => Done!
-    //  => C,K,H,N,O,[(U,G)|(L,U)|(G,L)]
-    // So there are only three possible solutions for this corner case
-
-    // so psuedocode...
-    // step 1. is the sticker I am currently looking at in the correct spot?
-    const solutionArray = []
-    const finishedCorners = []
-    const stickerIsHome = false
-    let currentSticker = ''
-    const currentCorner = {}
-    const stickerIsOnBufferCorner = false
-    if (stickerIsOnBufferCorner) {
-        // I am reaching a splitting point
-        // Now I have to pick a random corner from:
-        // corners - finishedCorners
-        // Then pick a random sticker from one of the picked corner
-
-        // But I really need to choose every sticker that is left to get all solutions
-    }
-    else if (stickerIsHome) {
-        // I am only arriving here as a beginning of a cycle
-        // Mark corner as done
-        finishedCorners.push(currentCorner)
-
-
-    } else {
-        // Push sticker to solution array
-        solutionArray.push(currentSticker)
-
-        // Add the corner the sticker belongs to into an array of finished corners
-        finishedCorners.push(currentCorner)
-        // Although if this is the beginning of a cycle, then
-        // the corner should not be added to a list of finished corners
-        // and now the cyclestarting corner closes the cycle when another
-        // sticker belonging to it arrives...
-
-        // Have i looked at all corners now?
-        if (finishedCorners.length === 7) {
-            // The solution is ready
-            return solutionArray
-        } else {
-            // The solution is not ready
-            // Update the current sticker and corner and repeat
-        }
-
-    }
-
-    
-
-}
-
-function cornie(codedScramble, stickerMap, cornerMap) {
-    const cycleSticker = 'A'
-    const cycleCorner = ['A', 'E', 'R']
-    let currentCorner = ['C', 'J', 'M']
-    let currentSticker = 'C'
-    const solutionArray = []
-    const finishedCorners = []
-
-    // If the first sticker in the cycle is home
-    // Then simply mark the corner as finished and move on
-    if (currentSticker === cycleSticker) {
-        finishedCorners.push(cycleCorner)
-        return
-    }
-
-    while (true) {
-        // Push the current sticker into the solution array
-        solutionArray.push(currentSticker)
-        // Push the current corner into the finishedCorners array
-        finishedCorners.push([...currentCorner])
-
-        // We have now reached the end of the cycle...
-        if (cycleCorner.indexOf(currentSticker) >= 0) {
-            break
-        }
-
-        // Update current sticker to the sticker that is currently
-        // occupying the slot the currentSticker calls home
-        const index = stickerMap[currentSticker]
-
-        // Lookup the sticker in the current scramble that occupies that id
-        currentSticker = codedScramble.split('')[index]
-
-        // Lookup the corner that owns this sticker
-        currentCorner = cornerMap[currentSticker]
-    }
-}
-
-
-function getCorner(sticker) {
-    let cid = pieceMap.corners[sticker]
+function getPiece(sticker) {
+    let cid = pieceMap[sticker]
     // console.log('cid: ', cid)
-    let cor = _.cloneDeep(piecesM.corners[cid])
+    let cor = _.cloneDeep(piecesM[cid])
     // console.log('cor: ', cor)
-    return { sticker, id: cid, corner: cor }
+    return { sticker, id: cid, piece: cor }
 }
 
-function getNextCorner(codedScramble, currentSticker) {
+function getNextPiece(codedScramble, currentSticker) {
     const idx = stickerMap[currentSticker]
     // console.log('idx: ', idx)
     const sticker = codedScramble.split('')[idx]
     // console.log('new current sticker: ', sticker)
-    return getCorner(sticker)
+    return getPiece(sticker)
 }
 
-function solveCornerCycle(codedScramble, startSticker, isBufferCycle = false) {
+function solveCycle(codedScramble, startSticker, isBufferCycle = false) {
     // There exists only one solution for any cycle
     const solution = []
-    const corners = {}
+    const pieces = {}
 
-    // This will be the id of the cycle and will consist of 
-    // all the corners as a sorted string
+    // This will be the id of the cycle and will consist of
+    // all the pieces as a sorted string
     let id = ''
 
-    const cycle = getCorner(startSticker)
+    const cycle = getPiece(startSticker)
 
     // First get the next sticker
     // let current = { sticker: cycle.sticker, corner: cycle.corner }
     // console.log('cycle: ', cycle)
-    let current = getNextCorner(codedScramble, cycle.sticker)
+    let current = getNextPiece(codedScramble, cycle.sticker)
     console.log('cycle: ', cycle)
     console.log('current: ', current)
 
@@ -251,13 +124,13 @@ function solveCornerCycle(codedScramble, startSticker, isBufferCycle = false) {
     //    And we return the corner that is solved
     if (current.sticker === cycle.sticker) {
         console.log('No cycle here...')
-        // We mark the corner as solved
-        corners[current.id] = current.corner
+        // We mark the piece as solved
+        pieces[current.id] = current.piece
 
         id = current.id
 
         // And return from the function
-        return { solution, id, corners }
+        return { solution, id, pieces }
     }
 
     // Add the first of the cycle into the solution array
@@ -270,114 +143,132 @@ function solveCornerCycle(codedScramble, startSticker, isBufferCycle = false) {
     // run forever
     let counter = 0
 
-    while (counter < 10) {
+    while (counter < 12) {
         counter += 1
 
         // Is this sticker on the cycle piece?
-        const lastInCycle = cycle.corner[current.sticker]
+        const lastInCycle = cycle.piece[current.sticker]
 
         console.log('another one bites the dust')
 
-        // We add the corner to the list of corners
-        corners[current.id] = current.corner
+        // We add the piece to the list of pieces
+        pieces[current.id] = current.piece
 
         // If this is the last sticker in the cycle
         if (lastInCycle) {
             // We only add this sticker to memorization
-            // If we are simply twisting a corner
+            // If we are simply twisting a piece
             if (solution.length === 1) {
                 solution.push(current.sticker)
                 id = current.id
             } else {
-                id = _.keys(corners).sort().join('_')
+                id = _.keys(pieces)
+                    .sort()
+                    .join('_')
             }
 
             console.log('we have closed the circle')
-            return { solution, id, corners }
+            return { solution, id, pieces }
         }
 
         // Add the sticker to the memorization list
         solution.push(current.sticker)
 
         // and finally get next sticker/corner...
-        current = getNextCorner(codedScramble, current.sticker)
+        current = getNextPiece(codedScramble, current.sticker)
     }
 
     // Finally we return without closing the circle...
     // This should never happen...
-    console.error('This shouldn\'t be possible')
-    return { solution, id, corners }
+    console.error("This shouldn't be possible")
+    return { solution, id, pieces }
 }
 
-
-var randomProperty = function (obj) {
-    var keys = Object.keys(obj)
-    return obj[keys[ keys.length * Math.random() << 0]]
-}
-
-function solveCorners(codedScramble) {
+function findSolution(codedScramble, corners = true, buffer) {
     console.log('attempting to solve: ', codedScramble)
 
     const solveResult = {
         bufferCycle: [],
         cycles: {},
-        allSolutions: [],
+        allSolutions: []
     }
-    
+
+    let bufferSticker = buffer
+    if (bufferSticker === undefined) {
+        bufferSticker = corners ? 'A' : 'u'
+    }
     // First get an A cycle (since our buffer is A)
-    const bufferCycle = solveCornerCycle(codedScramble, 'A', true)
+    const bufferCycle = solveCycle(codedScramble, bufferSticker, true)
 
     // Save the solution as our buffer cycle
     solveResult.bufferCycle = bufferCycle.solution
 
     // Keep track of our solved corners
-    let corners = bufferCycle.corners
+    let pieces = bufferCycle.pieces
 
     // now to see if we are done
-    if (_.size(corners) === 8) return solveResult
+    const solvedPieceCount = _.size(pieces)
+    if (corners && solvedPieceCount === 8) return solveResult
+    if (!corners && solvedPieceCount === 12) return solveResult
 
     // Find remaining corners
-    const remainingCorners = _.omit(_.cloneDeep(piecesM.corners), _.keys(corners))
-    console.log('remaining corners: ', _.keys(remainingCorners))
+    const remainingPieces = _.omit(
+        _.cloneDeep(corners ? piecesM.corners : piecesM.edges),
+        _.keys(pieces)
+    )
+    console.log('remaining pieces: ', _.keys(remainingPieces))
 
     // This only solves one circles of length 1...
-    _.reduce(remainingCorners, (r, v, k) => {
-        // key is ex: GLU
-        // so now reduce v so that we create a cycle for all possibilities
-        // Now we create three cycles that start with this piece (G, L and U cycles)
-        // These will be stored in a two dimensional array: [[G-cycle], [L-cycle], [U-cycle]]
-        // So now we start with G:
-        console.log('k', k)
-        let cycleId = ''
-        let sol = k.split('').map(s => {
-            const rrr = solveCornerCycle(codedScramble, s)
-            // corners = { ...corners, ...rrr.corners }
-            // console.log('cylce ID: ', rrr.id)
-            cycleId = rrr.id
-            return rrr.solution
-        })
-        if (sol[0].length > 0) {
-            (solveResult.cycles[cycleId] || (solveResult.cycles[cycleId] = [])).push(...sol)
-        }
+    _.reduce(
+        remainingPieces,
+        (r, v, k) => {
+            // key is ex: GLU
+            // so now reduce v so that we create a cycle for all possibilities
+            // Now we create three cycles that start with this piece (G, L and U cycles)
+            // These will be stored in a two dimensional array: [[G-cycle], [L-cycle], [U-cycle]]
+            // So now we start with G:
+            console.log('k', k)
+            let cycleId = ''
+            let sol = k.split('').map(s => {
+                const rrr = solveCycle(codedScramble, s)
+                // corners = { ...corners, ...rrr.corners }
+                // console.log('cylce ID: ', rrr.id)
+                cycleId = rrr.id
+                return rrr.solution
+            })
+            if (sol[0].length > 0) {
+                ;(solveResult.cycles[cycleId] ||
+                    (solveResult.cycles[cycleId] = [])
+                ).push(...sol)
+            }
 
-        console.log('corners: ', corners)
-        console.log('solveResult: ', solveResult)
-    }, {})
+            console.log('corners: ', pieces)
+            console.log('solveResult: ', solveResult)
+        },
+        {}
+    )
 
     return solveResult
 }
 
-const sol = solveCorners(encode(cornerScramble4))
+function solve(codedScramble) {
+    const corners = findSolution(codedScramble, true, 'A')
+    const edges = findSolution(codedScramble, false, 'u')
+    // Now we can have props like is it an odd or even number of corners/edges
 
-console.log('calculated solution: ', sol)
+    // somehow calculate all solutions
+    // corners first: corners * edges
+    // edges first: edges * corners
+    // const allSolutions = 
+
+    return { corners, edges }
+}
+
+const sol = solve(encode(cornerScramble4))
+
+console.log('calculated solution (corners): ', sol.corners)
+console.log('calculated solution (edges): ', sol.edges)
 // console.log('correct solution: C,K,H,N,O,[(U,G)|(L,U)|(G,L)]')
 // console.log('correct solution: [(N,B)|(B,Q)|(Q,N)],[(M,W,U|W,U,M|U,M,W)|(C,T,L|T,L,C|L,C,T)|(J,O,G|O,G,J|G,J,O)]')
-
-
-
-
-
-
-
 
 // And for edges is pretty much the same, just a different starting point
