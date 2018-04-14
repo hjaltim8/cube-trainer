@@ -55,6 +55,7 @@ console.log('hello world')
 //     },
 // }
 
+// eslint-disable-next-line
 const corners = {
     1: { stickers: { u: 'A', l: 'E', b: 'R' }, type: 'corner' },
     2: { stickers: { u: 'B', r: 'N', b: 'Q' }, type: 'corner' },
@@ -66,6 +67,7 @@ const corners = {
     8: { stickers: { d: 'X', l: 'H', b: 'S' }, type: 'corner' },
 }
 
+// eslint-disable-next-line
 const edges = {
     1: { stickers: { u: 'a', b: 'q' }, type: 'edge' },
     2: { stickers: { u: 'b', r: 'm' }, type: 'edge' },
@@ -81,6 +83,7 @@ const edges = {
     12: { stickers: { d: 'x', l: 'g' }, type: 'edge' },
 }
 
+// eslint-disable-next-line
 const centers = {
     1: { stickers: { u: '0' }, type: 'cemter' },
     2: { stickers: { l: '1' }, type: 'cemter' },
@@ -99,9 +102,12 @@ const centers = {
 //     dlf: {}, dcf: {}, drf: {}, dcl: {}, dc: {}, dcr: {}, dlb: {}, dcb: {}, drb: {},
 // }
 // U/L/F/R/B/D => Solved ex
+// eslint-disable-next-line
 const solved = 'uuuuuuuuulllllllllfffffffffrrrrrrrrrbbbbbbbbbddddddddd'
+// eslint-disable-next-line
 const solvd = 'AaBd0bDcCEeFh1fHgGIiJl2jLkKMmNp3nPoOQqRt4rTsSUuVx5vXwW'
 
+// eslint-disable-next-line
 function mapCubeToLetters(cubeString) {
     // map the string into their corners...
     // and get the correct bld id from that

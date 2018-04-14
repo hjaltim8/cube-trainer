@@ -1,0 +1,18 @@
+language: node_js
+node_js:
+- '8'
+cache:
+  directories:
+  - node_modules
+script:
+- yarn build
+deploy:
+  provider: s3
+  skip_cleanup: true
+  local_dir: build
+  access_key_id: $S3_KEY_ID
+  secret_access_key:
+    secure: UWLcOtQAI+qAAXycL9hK2Uz5C1W26t2/YgoLUVchi4S0eKU+LrJTvYM8JvElOwHiFAvNgstBQE9xCT0uXFEOTJj7MdZcgSWPNgscwN93V70vbnZIKN2eejk2Tq45k/mMYFDL1r+zPyuwp9wZO91/smsR3lssFtgwj76YQV12ZqNtnxXbEC+iI4Twh9sMs+MgSexw8jxIRUyPSpSiI1KjCO1CbSeUqJ6LXDhJmGjrPJl4Lpt1bvOaj1awpfQ7QbL/d7BGPBgTNuNHJie7yiT1Aj8OJvQfz5FUvngU/95mIp+Z+xXOD+r4CvSE4uYgkR0M3iSfsWCexgfrrZSq7Qb2k7otO8ZRRQTtWN7WcqWiqsuJ2yivi5ZWezcB+wR2fuvL8pJl55omf4bIlvy1YMKVZ4Efokqvk7v2lZoCV3Un5ZUKubZ79IyXelmLvhu5t2b/ACVMWJo7D44F1SNvlXrrYOh0lrKF08BGkZ1g6nadHepdSHD7syIsvMdkMFRz4Z/zQ0xBIemfqcfdRhN8VnTsK2xDZDGrZ4JqYuupoWHC8ZOfq1ML64P3qHmabR5/GD3JHzq2d1gC64riTHzBBi9VvUWRcKSiVayUriM5Zi2lAS5fLdtwdVtBwaz/6bGpO7jb2GY4IiePP0HCUKMZc/Yyqa+Ed2vlcvN5JbOKtUDXe2Y=
+  bucket: cube-trainer.kolbeinsson.se
+  region: eu-west-1
+  acl: public_read

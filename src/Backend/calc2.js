@@ -1,6 +1,6 @@
 import _ from 'lodash'
 // import fromKey from './mapping1.json'
-import toKey from './mapping2.json'
+// import toKey from './mapping2.json'
 import encodeToBld from './encodeToBld.json'
 import decodeFromBld from './decodeFromBld.json'
 import pieces from './pieces.json'
@@ -23,12 +23,15 @@ const scramble = 'ubulurufululblfldlfuflfrfdfrurfrbrdrbubrblbdbdfdldrdbd'
 //  6. C,K,H,N,O,(Q), U, G, (D|F|I) => Done!
 //  => C,K,H,N,O,[(U,G)|(L,U)|(G,L)]
 // So there are only three possible solutions for this corner case
+// eslint-disable-next-line
 const cornerScramble = 'uubuubuufrbllllrffffdffudrlrrrrrrdbbdlfdbbulblfbdddudl'
 
 // correct solution: [[N,B] or [B,Q] or [Q,N]],[[M,W,U or W,U,M or U,M,W] or [C,T,L or T,L,C or L,C,T] or [J,O,G or O,G,J or G,J,O]]
+// eslint-disable-next-line
 const cornerScramble2 = 'bubuuuuubulllllllfffrfffuffdrurrrrrlrblbbbfbbrdddddddd'
 
 // no buffer cycle and 2 cycles
+// eslint-disable-next-line
 const cornerScramble3 = 'bubuuuuubulllllrlfffrfffurbdrurrrlflrblbbbfbfrdddddddd'
 
 // only a buffer cycle
